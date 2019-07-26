@@ -1,0 +1,117 @@
+# LISTA-3
+
+print("...................................................................... ")
+print("Pode-se criar um arquivo que mostre a frequência das palavras")
+print("contidas em arquivos txt\n")
+print("A) digite 1 se você quiser a lista em ordem lexicográfica")
+print("B) digite 2 se você quiser a lista em ordem de frequência ")
+print("frequente ao menos frequênte")
+print("...................................................................... \n")
+
+
+import os
+
+def escrita_lex(y):# parada alfabetica
+    unics = []
+    for i in y:
+        if i not in unics:
+            unics.append(i)
+    
+    escrita = open('Frequencia.txt','w')# 
+    escrita.writelines("+~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~+\n")
+    escrita.writelines("|       Palavras       |   Frequência   |\n")
+    escrita.writelines("+~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~+\n")
+    t = sorted(unics)
+    for i in t:
+        f = y.count(i)
+        escrita.writelines("| {0:^20} | {1:^14} |\n".format(i,f))
+        escrita.writelines("+----------------------+----------------+\n")
+    escrita.close()
+    return
+
+def escrita_freq(y):# frequência
+    unics = []
+    freq=[]
+    plv_ord =[]
+
+    for i in y:# cria a lista sem repetir palavras
+        if i not in unics:
+            unics.append(i)
+    t = sorted(unics)
+
+    for i in t:# informa as frequências dentro do programa
+        ind = y.count(i)
+        if ind not in freq:
+            freq.append(ind)
+        else:
+            pass
+    freq_ord = sorted(freq, reverse=True)
+    
+    for i in freq_ord:# Coloca na lista as palavras em ordem de frequência
+        for j in t:
+            if i == y.count(j):
+                plv_ord.append(j)
+    
+    escrita = open('Frequencia.txt','w')# 
+    escrita.writelines("+~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~+\n")
+    escrita.writelines("|       Palavras       |   Frequência   |\n")
+    escrita.writelines("+~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~~~~~+\n")
+    
+    for i in plv_ord:# escreve no arquivo
+        w = y.count(i)
+        escrita.writelines("| {0:^20} | {1:^14} |\n".format(i,w))
+        escrita.writelines("+----------------------+----------------+\n")
+    escrita.close()
+    return
+
+def palavras(x):
+    arq = os.listdir(".")# abre o diretório
+    txts = []
+    plvrs = []
+    for i in arq:# pega só os txt
+        if i[-4:]=='.txt':
+            txts.append(i)
+        else:
+            pass
+
+    for i in txts:# lê todos os txt e coloca as palavras encontradas em uma lista
+        abrir = open(i,'r')
+        ler = abrir.read()
+        sep = ler.split()
+        
+        for i in sep:# retira tudo que eu não considero pertinente e coloca na lista de palavras
+            if len(i)>2:
+                c1=i.lower()
+                c2=c1.replace(",","")
+                c3=c2.replace('"',"")
+                c4=c3.replace(".","")
+                c5=c4.replace("(","")
+                c6=c5.replace(")","")
+                c7=c6.replace(":","")
+                c8=c7.replace(";","")
+                plvrs.append(c8)
+            else:
+                pass
+
+    
+    
+    if x == 1:
+        escrita_lex(plvrs)
+        print("Arquivo Criado")
+
+    else: 
+        escrita_freq(plvrs)
+        print("Arquivo Criado")
+
+
+
+ordem = int(input("- "))# só para ver em que ordem o usuario quer mesmo
+while ordem != 2 and ordem != 1:
+    print("Éssa opção ai nem vale filho, tenta de novo\n")
+    ordem = int(input("- "))
+    
+if ordem == 1:
+    palavras(1)
+else:
+    palavras(2)
+
